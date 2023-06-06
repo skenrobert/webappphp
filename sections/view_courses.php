@@ -1,10 +1,11 @@
 <?php include('../templates/header.php'); ?>
+<?php include('../sections/courses.php'); ?>
 
 
 <div class="col-md-3">
 
 
-    <form class="">
+    <form action="" method="post">
 
         <div class="card">
             <div class="card-header">
@@ -24,9 +25,9 @@
 
 
                 <div class="btn-group" role="group" aria-label="Button group name">
-                    <button type="button" class="btn btn-success">Add</button>
-                    <button type="button" class="btn btn-primary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="submit" name="action" value="add" class="btn btn-success">Add</button>
+                    <button type="submit" name="action" value="edit" class="btn btn-primary">Edit</button>
+                    <button type="submit" name="action" value="delete" class="btn btn-danger">Delete</button>
                 </div>
 
             </div>
@@ -49,11 +50,20 @@
             </tr>
         </thead>
         <tbody>
+            <?php foreach($listCourses as $course){ ?>
             <tr class="">
-                <td scope="row">R1C1</td>
-                <td>R1C2</td>
-                <td>R1C3</td>
+                <td scope="row"> <?php echo $course['id'] ?> </td>
+                <td><?php echo $course['name'] ?></td>
+
+                <td>
+                        <form action="" method="post">
+                                <input type="text" name='id' id="id" value="<?php echo $course['id']; ?>" hidden>
+                                <input type="submit" name="accion" value="select" class="btn btn-info">
+
+                        </form>
+                </td>
             </tr>
+            <?php } ?>
 
         </tbody>
     </table>
