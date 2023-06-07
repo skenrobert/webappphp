@@ -16,7 +16,7 @@ $action=isset($_POST['action'])  ? $_POST['action'] : '';
 
 $id=isset($_POST['id']) ? $_POST['id'] : ''; //from select
 
- print_r($list_course);
+//  print_r($list_course);
 
 if($action != '' ){
     switch ($action) {
@@ -30,6 +30,15 @@ if($action != '' ){
 
             $student_id=$conexionDB->lastInsertId();
 
+
+            foreach($list_course as $course){
+                $sql = "INSERT INTO students_courses (id, course_id, student_id) VALUES (NULL , :course_id, :student_id)";
+                $consulta=$conexionDB->prepare($sql);
+                $consulta->bindParam(':student_id', $student_id);
+                $consulta->bindParam(':course_id', $course);
+                $consulta->execute();
+            }
+
             break;
         case 'edit':
             $sql = "UPDATE students SET name=:name, last_name=:last_name  WHERE id=:student_id ";
@@ -38,6 +47,24 @@ if($action != '' ){
             $consulta->bindParam(':name', $name);
             $consulta->bindParam(':last_name', $last_name);
             $consulta->execute();
+
+
+            if(isset($list_course)){
+                $sql="DELETE FROM students_courses WHERE student_id=:student_id";
+                $consulta=$conexionDB->prepare($sql);
+                $consulta->bindParam(':student_id', $student_id);
+                $consulta->execute();
+
+                    foreach($list_course as $course){
+                        $sql = "INSERT INTO students_courses (id, course_id, student_id) VALUES (NULL , :course_id, :student_id)";
+                        $consulta=$conexionDB->prepare($sql);
+                        $consulta->bindParam(':student_id', $student_id);
+                        $consulta->bindParam(':course_id', $course);
+                        $consulta->execute();
+                    }
+
+                    $arrcourse = $list_course;
+            }
 
             break;
         case 'delete':
@@ -55,10 +82,27 @@ if($action != '' ){
             $consulta->bindParam(':id', $id);
             $consulta->execute();
             $student=$consulta->fetch(PDO::FETCH_ASSOC);
-            // print_r($student);
             $name= $student['name'];
             $last_name= $student['last_name'];
             $student_id= $student['id'];
+
+
+            //  USE appcourse;
+            // SELECT courses.id FROM students_courses INNER JOIN courses ON courses.id=students_courses.course_id WHERE students_courses.student_id = 2;
+            // $sql= "SELECT courses.id FROM students_courses INNER JOIN courses ON courses.id=students_courses.course_id WHERE students_courses.student_id = '".$student_id."' ";
+            $sql= "SELECT courses.id FROM students_courses INNER JOIN courses ON courses.id=students_courses.course_id WHERE students_courses.student_id =:student_id";
+            
+            $consulta=$conexionDB->prepare($sql);
+            $consulta->bindParam(':student_id', $student_id);
+            $consulta->execute() or die('error SQL !<br />'.$sql.'<br />');
+            $coursesStudent = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+            // print_r($coursesStudent);
+
+            foreach($coursesStudent as $course){
+                // echo $course['id'];                
+                $arrcourse[]=$course['id'];
+            }
 
             break;
         
@@ -91,8 +135,9 @@ $liststudents=$consulta->fetchAll();
         $courseStudent=$consulta->fetchAll();
         $liststudents[$key]['courseStudent'] = $courseStudent;
     }
-print_r($liststudents);
+// print_r($liststudents);
 
 
-
-?>
+$sql="SELECT * FROM courses";
+$courses=$conexionDB->query($sql);
+$listCourses=$courses->fetchAll();

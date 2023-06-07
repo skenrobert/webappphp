@@ -30,11 +30,21 @@
 
                 <div class="mb-3">
                     <label for="list_course" class="form-label">Course</label>
-                    <select multiple class="form-select form-select-lg" name="list_course" id="list_course">
-                        <option selected>Select one</option>
-                        <option value="1">New Delhi</option>
-                        <option value="2">Istanbul</option>
-                        <option value="3">Jakarta</option>
+                    <select multiple class="form-select form-select-lg" name="list_course[]" id="list_course">
+                        <?php foreach($listCourses as $course){ ?>
+                        <option
+                        
+                        <?php 
+                                if(!empty($arrcourse)):
+                                    if(in_array($course['id'], $arrcourse)):
+                                        echo 'selected';
+
+                                    endif;
+                                endif;
+                        ?>
+                        
+                        value="<?php echo $course['id']; ?>"> <?php echo $course['id']; ?> - <?php echo $course['name']; ?></option>
+                        <?php  }   ?>
                     </select>
                 </div>
 
@@ -70,7 +80,15 @@
             <tr class="">
                 <td scope="row"> <?php echo $student['id'] ?> </td>
                 <td><?php echo $student['name'] ?></td>
-                <td><?php echo $student['last_name'] ?></td>
+                <td><?php echo $student['last_name'] ?>
+                    <br>
+                    <?php  foreach($student['courseStudent'] as $course){ ?>
+
+                        <a href="certificate.php?course_id=<?php echo $course['id']; ?>&student_id=<?php echo $student['id']; ?>"><?php  echo $course['name']; ?></a>
+
+                    <?php } ?>
+
+            </td>
 
                 <td>
                         <form action="" method="post">
