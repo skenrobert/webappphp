@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+if($_POST){
+
+    $error = 'wrong user or password';
+
+    if($_POST['user'] == 'admin' && $_POST['password'] == 'admin'){
+            $_SESSION['user'] = $_POST['user'];
+            header('Location: sections/index.php');
+    }
+}
+
+
+?>
 <!doctype html>
 <html lang="en">
 
@@ -21,13 +36,21 @@
             <div class="col-md-4" class="d-flex justify-content-center">
                 <br />
 
-                <form action="sections/index.php" method="post">
+                <form action="" method="post">
 
                     <div class="card">
                         <div class="card-header">
-                            START SECTION
+                            START SESSION 
                         </div>
                         <div class="card-body">
+
+                        <?php   if(isset($error)){ ?>
+
+                            <div class="alert alert-danger" role="alert">
+                                <strong><?php echo $error; ?></strong> try against
+                            </div>
+                            
+                            <?php }  ?>
 
                             <div class="mb-3">
                                 <label for="" class="form-label">User</label>

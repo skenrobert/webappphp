@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['user'])){
+    header('Location: ../index.php');
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -12,6 +21,9 @@
 
     <!-- https://tom-select.js.org/ -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+
+<!-- https://www.bootstrapcdn.com/bootstrapicons/ -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">    
 </head>
 
 <body>

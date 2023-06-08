@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
 
-                <div class="mb-3">
+                <div class="mb-3 d-none">
                     <label for="student_id" class="form-label">N° student</label>
                     <input type="text" value="<?php echo $student_id; ?>" class="form-control" name="student_id" id="student_id" aria-describedby="helpId" placeholder="ID" readonly>
                 </div>
@@ -84,8 +84,9 @@
                     <br>
                     <?php  foreach($student['courseStudent'] as $course){ ?>
 
-                        <a href="certificate.php?course_id=<?php echo $course['id']; ?>&student_id=<?php echo $student['id']; ?>"><?php  echo $course['name']; ?></a>
+                        <a href="certificate.php?course_id=<?php echo $course['id']; ?>&student_id=<?php echo $student['id']; ?>"><i class="bi bi-filetype-pdf text-danger"></i>      <?php  echo $course['name']; ?> </a>
 
+                        
                     <?php } ?>
 
             </td>
