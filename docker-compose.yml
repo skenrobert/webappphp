@@ -1,10 +1,29 @@
 version: '3.8'
 services:  
-  php:
+  server_php:
+    container_name: server_php
     build: .  
     ports:
-      - "8000:80"      
-  db:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html      
+    links:
+      - server_mysql
+  server_mysql:
+    container_name: server_mysql
     image: mysql
+    command:
+        --default-authentication-plugin=mysql_native_password
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
+        MYSQL_ROOT_PASSWORD: mysql
+    ports:
+        - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # - /home/toor/Documents/GitHub/webappphp:/var/lib/mysql
+
+volumes:
+  mysql_data:
+
+  # https://gandalab.com/como-crear-configurar-utilizar-mysql-en-un-contenedor-de-docker/

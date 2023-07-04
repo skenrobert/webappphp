@@ -12,6 +12,24 @@ if($_POST){
 }
 
 
+// The MySQL service named in the docker-compose.yml.
+$host = 'server_mysql';
+
+// Database use name
+$user = 'root';
+
+//database user password
+$pass = 'mysql';
+
+// check the MySQL connection status
+$conn = new mysqli($host, $user, $pass);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} else {
+    echo "Connected to MySQL server successfully!";
+}
+
+
 ?>
 <!doctype html>
 <html lang="en">
